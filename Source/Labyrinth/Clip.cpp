@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Clip.h"
+#include "Projectile.h"
 #include "Engine/EngineTypes.h"
 
 
@@ -19,7 +20,7 @@ AClip::AClip()
 	
 	
 	ClipMesh->SetSimulatePhysics(false);
-	//ClipMesh->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+	ClipMesh->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 	ClipMesh->bGenerateOverlapEvents = false;
 
 	ClipCapsule->bGenerateOverlapEvents = true;
@@ -33,12 +34,18 @@ void AClip::OnOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* Oth
 		return;
 
 	ALabyrinthHero* hero = Cast<ALabyrinthHero>(OtherActor);
+	AProjectile* projectile = Cast<AProjectile>(OtherActor);
+	if (projectile) {
+		GEngine->AddOnScreenDebugMessage(-2, 15.0f, FColor::Blue, TEXT("Hit"));
+	}
+
 	if (hero) {
 		if (hero->PickupAmmo()) {
 			Destroy();
 		}
+		GEngine->AddOnScreenDebugMessage(-2, 15.0f, FColor::Red, TEXT("Overlap"));
 	}
-	GEngine->AddOnScreenDebugMessage(-2, 15.0f, FColor::Red, TEXT("Overlap"));
+	
 	
 }
 
