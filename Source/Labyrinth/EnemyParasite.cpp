@@ -9,14 +9,17 @@ AEnemyParasite::AEnemyParasite()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	ParasiteCapsule = CreateDefaultSubobject<UCapsuleComponent>(TEXT("kok"));
 	
+	RootComponent = ParasiteCapsule;
+	
+	ParasiteCapsule->bGenerateOverlapEvents = true;
+	ParasiteCapsule->SetCapsuleHalfHeight(100.0);
+	ParasiteCapsule->SetCapsuleRadius(40.0);
 
-	//RootComponent = ParasiteCapsule;
-
-	/*ParasiteCapsule->bGenerateOverlapEvents = true;
-
-	ParasiteCapsule->OnComponentBeginOverlap.AddDynamic(this, &AEnemyParasite::OnOverlapBegin);*/
+	ParasiteCapsule->OnComponentBeginOverlap.AddDynamic(this, &AEnemyParasite::OnOverlapBegin);
 		
+	
 
 }
 
@@ -39,5 +42,17 @@ void AEnemyParasite::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+}
+
+void AEnemyParasite::OnOverlapBegin(UPrimitiveComponent * OverlappedComponent, AActor * OtherActor, UPrimitiveComponent * OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
+{
+
+	if ((OtherActor == nullptr) || (OtherActor == this) || (OtherComp == nullptr))
+		return;
+
+	
+
+		GEngine->AddOnScreenDebugMessage(-2, 15.0f, FColor::Blue, TEXT("FFFFF"));
+	
 }
 
