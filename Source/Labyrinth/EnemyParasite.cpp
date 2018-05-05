@@ -50,9 +50,14 @@ void AEnemyParasite::OnOverlapBegin(UPrimitiveComponent * OverlappedComponent, A
 	if ((OtherActor == nullptr) || (OtherActor == this) || (OtherComp == nullptr))
 		return;
 
-	
+	AProjectile* proj = Cast<AProjectile>(OtherActor);
+	if (proj) {
 
 		GEngine->AddOnScreenDebugMessage(-2, 15.0f, FColor::Blue, TEXT("FFFFF"));
+	}
+	else {
+		GEngine->AddOnScreenDebugMessage(-2, 15.0f, FColor::Red, TEXT("AAAAA"));
+	}
 	
 }
 
