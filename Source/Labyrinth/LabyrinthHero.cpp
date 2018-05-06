@@ -188,7 +188,9 @@ void ALabyrinthHero::StopFire() {
 
 void ALabyrinthHero::Reload() {	
 		
+	if (IsReloading) return;
 	if (total_ammo == 0 || ammo == Weapon->ammoCapacity) return;
+
 	IsReloading = true;
 	
     start_animation = std::chrono::system_clock::now();

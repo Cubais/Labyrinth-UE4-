@@ -26,6 +26,12 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	UPROPERTY()
+		int Health; //value representing how many times needs to be hit to death
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		bool IsDeath;
+
 	UFUNCTION(Category = "enemy")
 		void Attack() PURE_VIRTUAL(AEnemyAbstract::Attack, ;);
 

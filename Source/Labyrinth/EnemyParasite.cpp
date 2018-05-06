@@ -9,15 +9,21 @@ AEnemyParasite::AEnemyParasite()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	ParasiteCapsule = CreateDefaultSubobject<UCapsuleComponent>(TEXT("kok"));
 	
+	/*ParasiteCapsule = CreateDefaultSubobject<UCapsuleComponent>(TEXT("kok"));
+	ParasiteMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("kok2"));
+
+	
+
 	RootComponent = ParasiteCapsule;
+	//GetMesh()->AttachToComponent(RootComponent,FAttachmentTransformRules::KeepRelativeTransform);
+	ParasiteMesh->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 	
 	ParasiteCapsule->bGenerateOverlapEvents = true;
 	ParasiteCapsule->SetCapsuleHalfHeight(100.0);
 	ParasiteCapsule->SetCapsuleRadius(40.0);
 
-	ParasiteCapsule->OnComponentBeginOverlap.AddDynamic(this, &AEnemyParasite::OnOverlapBegin);
+	ParasiteCapsule->OnComponentBeginOverlap.AddDynamic(this, &AEnemyParasite::OnOverlapBegin);*/
 		
 	
 
@@ -27,6 +33,8 @@ AEnemyParasite::AEnemyParasite()
 void AEnemyParasite::BeginPlay()
 {
 	Super::BeginPlay();
+	IsDeath = false;
+	Health = 10;
 	
 }
 
@@ -34,6 +42,11 @@ void AEnemyParasite::BeginPlay()
 void AEnemyParasite::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	if (IsDeath) {
+		auto end_animation = std::chrono::system_clock::now();
+		std::chrono::duration<double> animation_done = end_animation - start_animation;
+		if (animation_done.count() > 4.6) Destroy();
+	}
 
 }
 
@@ -44,20 +57,24 @@ void AEnemyParasite::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 
 }
 
-void AEnemyParasite::OnOverlapBegin(UPrimitiveComponent * OverlappedComponent, AActor * OtherActor, UPrimitiveComponent * OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
-{
 
-	if ((OtherActor == nullptr) || (OtherActor == this) || (OtherComp == nullptr))
+void AEnemyParasite::Hit(AActor* OtherActor) {
+
+	if ((OtherActor == nullptr) || (OtherActor == this))
 		return;
+
+	if (IsDeath) return;
 
 	AProjectile* proj = Cast<AProjectile>(OtherActor);
 	if (proj) {
 
-		GEngine->AddOnScreenDebugMessage(-2, 15.0f, FColor::Blue, TEXT("FFFFF"));
+		GEngine->AddOnScreenDebugMessage(-2, 15.0f, FColor::Blue, TEXT("KOk"));
+		Health--;
+		if (Health == 0) {
+			IsDeath = true;
+			start_animation = std::chrono::system_clock::now();
+		}
 	}
-	else {
-		GEngine->AddOnScreenDebugMessage(-2, 15.0f, FColor::Red, TEXT("AAAAA"));
-	}
-	
+
 }
 

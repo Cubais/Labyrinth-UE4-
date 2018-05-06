@@ -14,8 +14,8 @@ AProjectile::AProjectile()
 
 	ProjectileMovementComponent = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileMovementComponent"));
 	
-	ProjectileMovementComponent->InitialSpeed = 2000;
-	ProjectileMovementComponent->MaxSpeed = 2000;
+	ProjectileMovementComponent->InitialSpeed = 5000;
+	ProjectileMovementComponent->MaxSpeed = 5000;
 	ProjectileMovementComponent->ProjectileGravityScale = 0;
 	ProjectileMovementComponent->bRotationFollowsVelocity = true;
 	ProjectileMovementComponent->bShouldBounce = true;

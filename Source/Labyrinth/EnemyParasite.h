@@ -6,6 +6,9 @@
 #include "EnemyAbstract.h"
 #include "Engine.h"
 #include "Components/CapsuleComponent.h"
+#include <chrono>
+#include <ctime>
+#include "Components/MeshComponent.h"
 #include "Projectile.h"
 #include "GameFramework/Actor.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -32,9 +35,11 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;	
 
-	UCapsuleComponent* ParasiteCapsule;
 	
-	UFUNCTION()
-		virtual void OnOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult);
+	UFUNCTION(BlueprintCallable)
+		void Hit(AActor* OtherActor);
+
+private:
+	std::chrono::system_clock::time_point start_animation;
 	
 };
